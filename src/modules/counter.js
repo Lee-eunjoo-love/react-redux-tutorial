@@ -1,10 +1,14 @@
+import { createAction } from 'redux-actions';
 // #. 액션 타입 정의 : '모듈명/액션명' 형태로 하여 액션명 충돌 방지
 const INCREASE = 'counter/INCREASE';
 const DECREASE = 'counter/DECREASE';
 
 // #. 액션 생성 함수
-export const increase = () => ({ type: INCREASE });
-export const decrease = () => ({ type: DECREASE });
+//export const increase = () => ({ type: INCREASE });
+//export const decrease = () => ({ type: DECREASE });
+// #. 액션 생성 함수 redux-actions 로 더 간편하게 생성
+export const increase = createAction(INCREASE);
+export const decrease = createAction(DECREASE);
 
 // #. 초기 상태
 const initialState = {
