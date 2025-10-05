@@ -78,7 +78,7 @@ const initialState = {
   }
 }*/
 // #. 리듀서 함수 redux-actions 로 더 간편하게 생성 : handleActions(<각 액션 업데이트 함수>, 초기 상태)
-const todos = handleActions(
+/*const todos = handleActions(
   {
     [CHANGE_INPUT]: (state, action) => ({ ...state, input: action.payload }),
     [INSERT]: (state, action) => ({
@@ -101,6 +101,37 @@ const todos = handleActions(
     [REMOVE]: (state, action) => ({
       ...state,
       todos: state.todos.filter((item) => item.id !== action.payload),
+    }),
+  },
+  initialState,
+);*/
+// #. 리듀서 함수 redux-actions 로 더 간편하게 생성 :
+//    createAction으로 만든 액션 생성함수는 파라미터로 받아 온 값을 객체 안에 넣을 때 payload 라는 이름으로 넣어 주므로
+//    action.payload 로 접근해야 한다.
+//    객체 비구조화 할당 문법으로 action 값의 payload 이름을 새로 설정하면 action.payload 가 어떤 값을 의미하는지 파악 용이.
+const todos = handleActions(
+  {
+    [CHANGE_INPUT]: (state, { payload: input }) => ({ ...state, input }),
+    [INSERT]: (state, { payload: text }) => ({
+      ...state,
+      todos: state.todos.concat({
+        id:
+          state.todos
+            .map((item) => item.id)
+            .reduce((max, current) => Math.max(max, current), 0) + 1,
+        text,
+        done: false,
+      }),
+    }),
+    [TOGGLE]: (state, { payload: id }) => ({
+      ...state,
+      todos: state.todos.map((item) =>
+        item.id === id ? { ...item, done: !item.done } : item,
+      ),
+    }),
+    [REMOVE]: (state, { payload: id }) => ({
+      ...state,
+      todos: state.todos.filter((item) => item.id !== id),
     }),
   },
   initialState,
