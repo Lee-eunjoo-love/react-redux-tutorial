@@ -10,6 +10,7 @@ const TodoItem = ({ todo, onToggle, onRemove }) => {
       <span
         style={{
           textDecoration: todo.done ? 'line-through' : 'none',
+          opacity: todo.done ? '.5' : '1',
           marginRight: '.5rem',
           marginLeft: '.5rem',
         }}
@@ -31,12 +32,7 @@ const Todos = ({
 }) => {
   const onSubmit = (e) => {
     e.preventDefault();
-    const id =
-      todos
-        .map((item) => item.id)
-        .reduce((max, current) => Math.max(max, current), 0) + 1;
-
-    onInsert(id, input);
+    onInsert(input);
     onChangeInput('');
   };
 
