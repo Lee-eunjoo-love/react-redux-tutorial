@@ -3,13 +3,25 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { legacy_createStore as createStore } from 'redux';
+import rootReducer from './modules';
+import { Provider } from 'react-redux';
+import { devToolsEnhancer } from 'redux-devtools-extension';
+
+// #. [리덕스 적용] 스토어 생성
+const store = createStore(rootReducer);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+);
+/*root.render(
   <React.StrictMode>
     <App />
   </React.StrictMode>,
-);
+);*/
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
@@ -25,4 +37,8 @@ reportWebVitals();
  * 리덕스 관련 구조
  *  1. 일반적 구조 : actions, constants, reducers 디렉토리에 각 기능별로 파일을 하나씩 생성
  *  2. Ducks 패턴 : 액션타입, 액션생성함수, 리듀서함수를 기능별로 파일 하나에 몰아서 작성. src/modules
+ *
+ * 리액트 애플리케이션에서 리덕스 적용하기
+ *  1. 스토어 생성
+ *  2. Provider 컴포넌트 사용하여 프로젝트에 리덕스 적용
  */

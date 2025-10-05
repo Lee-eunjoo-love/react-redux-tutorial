@@ -10,9 +10,9 @@ export const changeInput = (input) => ({
   input,
 });
 
-export const insert = (text) => ({
+export const insert = (id, text) => ({
   type: INSERT,
-  text,
+  todo: { id, text, done: false },
 });
 
 export const toggle = (id) => ({
