@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { connect, useSelector, useDispatch } from 'react-redux';
+import { connect, useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { changeInput, insert, toggle, remove } from '../modules/todos';
 import Todos from '../components/Todos';
 import useActions from '../lib/useActions';
@@ -40,10 +40,13 @@ export default connect(
 
 // #. connect 함수 대신 useSelector, useDispatch Hook 사용하여 connect Hook 대체
 const TodosContainer = () => {
-  const { input, todos } = useSelector(({ todos }) => ({
-    input: todos.input,
-    todos: todos.todos,
-  }));
+  const { input, todos } = useSelector(
+    ({ todos }) => ({
+      input: todos.input,
+      todos: todos.todos,
+    }),
+    shallowEqual,
+  );
   /*// #. useCallback 으로 액션 디스패치 함수 감싸기
   const dispatch = useDispatch();
   const onChangeInput = useCallback(

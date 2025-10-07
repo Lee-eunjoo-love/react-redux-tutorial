@@ -7,10 +7,12 @@ import { legacy_createStore as createStore, applyMiddleware } from 'redux';
 import rootReducer from './modules';
 import { Provider } from 'react-redux';
 import { devToolsEnhancer } from 'redux-devtools-extension';
-import loggerMiddleware from './lib/loggerMiddleware';
+import { createLogger } from 'redux-logger';
+//import loggerMiddleware from './lib/loggerMiddleware';
 
 // #. [리덕스 적용] 스토어 생성
-const store = createStore(rootReducer, applyMiddleware(loggerMiddleware));
+const logger = createLogger();
+const store = createStore(rootReducer, applyMiddleware(logger));
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -44,4 +46,6 @@ reportWebVitals();
  *  2. Provider 컴포넌트 사용하여 프로젝트에 리덕스 적용
  *
  * 리덕스 미들웨어 적용하기
+ *
+ * [redux-logger] yarn add redux-logger
  */
