@@ -35,4 +35,9 @@ export default CounterContainer;
 
 /**
  * #. 컨테이너 컴포넌트 : 리덕스와 연동되어 있는 컴포넌트로 리덕스로부터 상태를 받아오고 스토어에 액션을 디스패치한다.
+ *
+ * #. useStore Hooks 를 사용하여 컴포넌트 내부에서 리덕스 스토어 객제 직접 사용 가능. (스토어에 직접접근이 불가피한 경우만 사용 권장)
+ *    const store = useStore();
+ *    store.dispatch({ type: 'SAMPLE_ACTION' });
+ *    store.getState();
  */
