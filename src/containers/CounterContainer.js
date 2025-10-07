@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import { connect, useSelector, useDispatch } from 'react-redux';
 import Counter from '../components/Counter';
 import { increase, decrease } from '../modules/counter';
@@ -19,15 +20,14 @@ export default connect(
 )(CounterContainer);*/
 
 // #. connect 함수 대신 useSelector Hook을 사용하여 리덕스의 상태 조회 및 useDispatch Hook 사용하여 스토어 내장함수 dispatch 사용
+// #. useCallback 으로 액션 디스패치 함수 감싸 리랜더링시마다 함수 새로 생성하지 않도록 하여 컴포넌트 최적화
 const CounterContainer = () => {
   const number = useSelector((state) => state.counter.number);
   const dispatch = useDispatch();
+  const onIncrease = useCallback(() => dispatch(increase()), [dispatch]);
+  const onDecrease = useCallback(() => dispatch(decrease()), [dispatch]);
   return (
-    <Counter
-      number={number}
-      onIncrease={() => dispatch(increase())}
-      onDecrease={() => dispatch(decrease())}
-    />
+    <Counter number={number} onIncrease={onIncrease} onDecrease={onDecrease} />
   );
 };
 
