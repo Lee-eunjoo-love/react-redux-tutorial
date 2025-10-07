@@ -1,8 +1,8 @@
-import { connect } from 'react-redux';
+import { connect, useSelector, useDispatch } from 'react-redux';
 import Counter from '../components/Counter';
 import { increase, decrease } from '../modules/counter';
 
-const CounterContainer = ({ number, increase, decrease }) => {
+/*const CounterContainer = ({ number, increase, decrease }) => {
   return (
     <Counter number={number} onIncrease={increase} onDecrease={decrease} />
   );
@@ -16,7 +16,22 @@ export default connect(
     number: state.counter.number,
   }),
   { increase, decrease },
-)(CounterContainer);
+)(CounterContainer);*/
+
+// #. connect 함수 대신 useSelector Hook을 사용하여 리덕스의 상태 조회 및 useDispatch Hook 사용하여 스토어 내장함수 dispatch 사용
+const CounterContainer = () => {
+  const number = useSelector((state) => state.counter.number);
+  const dispatch = useDispatch();
+  return (
+    <Counter
+      number={number}
+      onIncrease={() => dispatch(increase())}
+      onDecrease={() => dispatch(decrease())}
+    />
+  );
+};
+
+export default CounterContainer;
 
 /**
  * #. 컨테이너 컴포넌트 : 리덕스와 연동되어 있는 컴포넌트로 리덕스로부터 상태를 받아오고 스토어에 액션을 디스패치한다.
