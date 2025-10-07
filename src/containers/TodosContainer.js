@@ -1,8 +1,9 @@
-import { connect } from 'react-redux';
+import React, { useCallback } from 'react';
+import { connect, useSelector, useDispatch } from 'react-redux';
 import { changeInput, insert, toggle, remove } from '../modules/todos';
 import Todos from '../components/Todos';
 
-const TodosContainer = ({
+/*const TodosContainer = ({
   input,
   todos,
   changeInput,
@@ -34,7 +35,36 @@ export default connect(
     toggle,
     remove,
   },
-)(TodosContainer);
+)(TodosContainer);*/
+
+// #. connect 함수 대신 useSelector, useDispatch Hook 사용하여 connect Hook 대체
+const TodosContainer = () => {
+  const { input, todos } = useSelector(({ todos }) => ({
+    input: todos.input,
+    todos: todos.todos,
+  }));
+  const dispatch = useDispatch();
+  const onChangeInput = useCallback(
+    (input) => dispatch(changeInput(input)),
+    [dispatch],
+  );
+  const onInsert = useCallback((text) => dispatch(insert(text)), [dispatch]);
+  const onToggle = useCallback((id) => dispatch(toggle(id)), [dispatch]);
+  const onRemove = useCallback((id) => dispatch(remove(id)), [dispatch]);
+
+  return (
+    <Todos
+      input={input}
+      todos={todos}
+      onChangeInput={onChangeInput}
+      onInsert={onInsert}
+      onToggle={onToggle}
+      onRemove={onRemove}
+    />
+  );
+};
+
+export default React.memo(TodosContainer);
 
 /**
  * #. 컨테이너 컴포넌트 : 리덕스와 연동되어 있는 컴포넌트로 리덕스로부터 상태를 받아오고 스토어에 액션을 디스패치한다.
