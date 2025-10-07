@@ -8,11 +8,12 @@ import rootReducer from './modules';
 import { Provider } from 'react-redux';
 import { devToolsEnhancer } from 'redux-devtools-extension';
 import { createLogger } from 'redux-logger';
+import { thunk } from 'redux-thunk';
 //import loggerMiddleware from './lib/loggerMiddleware';
 
 // #. [리덕스 적용] 스토어 생성
 const logger = createLogger();
-const store = createStore(rootReducer, applyMiddleware(logger));
+const store = createStore(rootReducer, applyMiddleware(logger, thunk));
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -48,4 +49,7 @@ reportWebVitals();
  * 리덕스 미들웨어 적용하기
  *
  * [redux-logger] yarn add redux-logger
+ *
+ * [redux-thunk] yarn add redux-thunk
+ *   비동기 작업으 ㄹ처리할 때 가장 많이 사용하는 미들웨어. 객체가 아닌 함수 형태의 액션을 디스패치할 수 있게 해줌.
  */

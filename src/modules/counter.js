@@ -10,6 +10,18 @@ const DECREASE = 'counter/DECREASE';
 export const increase = createAction(INCREASE);
 export const decrease = createAction(DECREASE);
 
+// #. 액션 생성 함수의 비동기 함수
+export const increaseAsync = () => (dispatch) => {
+  setTimeout(() => {
+    dispatch(increase());
+  }, 1000);
+};
+export const decreaseAsync = () => (dispatch) => {
+  setTimeout(() => {
+    dispatch(decrease());
+  }, 1000);
+};
+
 // #. 초기 상태
 const initialState = {
   number: 0,

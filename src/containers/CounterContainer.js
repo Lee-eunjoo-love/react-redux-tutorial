@@ -1,7 +1,12 @@
 import React, { useCallback } from 'react';
 import { connect, useSelector, useDispatch } from 'react-redux';
 import Counter from '../components/Counter';
-import { increase, decrease } from '../modules/counter';
+import {
+  increase,
+  decrease,
+  increaseAsync,
+  decreaseAsync,
+} from '../modules/counter';
 import useActions from '../lib/useActions';
 
 /*const CounterContainer = ({ number, increase, decrease }) => {
@@ -29,7 +34,10 @@ const CounterContainer = () => {
   const onIncrease = useCallback(() => dispatch(increase()), [dispatch]);
   const onDecrease = useCallback(() => dispatch(decrease()), [dispatch]);*/
   // #. 사용자정의 usActions 유틸 Hook 만들어 사용하기
-  const [onIncrease, onDecrease] = useActions([increase, decrease], []);
+  const [onIncrease, onDecrease] = useActions(
+    [increaseAsync, decreaseAsync],
+    [],
+  );
 
   return (
     <Counter number={number} onIncrease={onIncrease} onDecrease={onDecrease} />
