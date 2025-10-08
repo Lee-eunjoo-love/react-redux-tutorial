@@ -1,53 +1,50 @@
 import { handleActions } from 'redux-actions';
 import * as api from '../lib/api';
 
-// #. 액션 타입 (요청당 3개씩)
 const GET_POST = 'sample/GET_POST';
-const GET_POST_SUCCESS = `sample/GET_POST_SUCCESS`;
-const GET_POST_FAILURE = `sample/GET_POST_FAILURE`;
+const GET_POST_SUCCESS = 'sample/GET_POST_SUCCESS';
+const GET_POST_FAILURE = 'sample/GET_POST_FAILURE';
 
 const GET_USERS = 'sample/GET_USERS';
-const GET_USERS_SUCCESS = `sample/GET_USERS_SUCCESS`;
-const GET_USERS_FAILURE = `sample/GET_USERS_FAILURE`;
+const GET_USERS_SUCCESS = 'sample/GET_USERS_SUCCESS';
+const GET_USERS_FAILURE = 'sample/GET_USERS_FAILURE';
 
-// #. 액션 함수 생성
 export const getPost = (id) => async (dispatch) => {
-  dispatch({ type: GET_POST });
+  dispatch({ type: GET_POST }); // 요청 시작
   try {
     const response = await api.getPost(id);
     dispatch({
       type: GET_POST_SUCCESS,
       payload: response.data,
-    });
+    }); // 요청 성공
   } catch (e) {
     dispatch({
       type: GET_POST_FAILURE,
       payload: e,
       error: true,
-    });
-    throw e;
+    }); // 요청 실패
+    throw e; // 나중에 컴포넌트단에서 에러를 조회할 수 있게 해 줌
   }
 };
 
 export const getUsers = () => async (dispatch) => {
-  dispatch({ type: GET_USERS });
+  dispatch({ type: GET_USERS }); // 요청 시작
   try {
     const response = await api.getUsers();
     dispatch({
       type: GET_USERS_SUCCESS,
       payload: response.data,
-    });
+    }); // 요청 성공
   } catch (e) {
     dispatch({
       type: GET_USERS_FAILURE,
       payload: e,
       error: true,
-    });
-    throw e;
+    }); // 요청 실패
+    throw e; // 나중에 컴포넌트단에서 에러를 조회할 수 있게 해 줌
   }
 };
 
-// #. 상태 초기 설정
 const initialState = {
   loading: {
     GET_POST: false,
@@ -55,55 +52,56 @@ const initialState = {
   },
   post: null,
   users: null,
+  error: null,
 };
-console.log('initialState', JSON.stringify(initialState));
 
-// #. 리듀서 함수 (2개 이상의 액션 처리 : handleAction -> handleActions)
 const sample = handleActions(
   {
     [GET_POST]: (state) => ({
       ...state,
       loading: {
         ...state.loading,
-        GET_POST: true, // #. 요청 시작
+        GET_POST: true, // 요청 시작
       },
     }),
     [GET_POST_SUCCESS]: (state, action) => ({
       ...state,
       loading: {
         ...state.loading,
-        GET_POST: false, // #. 요청 완료
+        GET_POST: false, // 요청 완료
       },
-      post: action.payload,
+      post: action.payload, // 결과 넣기
     }),
     [GET_POST_FAILURE]: (state, action) => ({
       ...state,
       loading: {
         ...state.loading,
-        GET_POST: false, // #. 요청 완료
+        GET_POST: false, // 요청 완료
       },
+      error: action.payload, // 에러 객체 넣기
     }),
     [GET_USERS]: (state) => ({
       ...state,
       loading: {
         ...state.loading,
-        GET_USERS: true, // #. 요청 시작
+        GET_USERS: true, // 요청 시작
       },
     }),
     [GET_USERS_SUCCESS]: (state, action) => ({
       ...state,
       loading: {
         ...state.loading,
-        GET_USERS: false, // #. 요청 완료
+        GET_USERS: false, // 요청 완료
       },
-      users: action.payload,
+      users: action.payload, // 결과 넣기
     }),
     [GET_USERS_FAILURE]: (state, action) => ({
       ...state,
       loading: {
         ...state.loading,
-        GET_USERS: false, // #. 요청 완료
+        GET_USERS: false, // 요청 완료
       },
+      error: action.payload, // 에러 객체 넣기
     }),
   },
   initialState,
