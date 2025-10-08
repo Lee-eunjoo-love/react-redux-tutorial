@@ -1,4 +1,4 @@
-import React from 'react';
+//import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
@@ -6,7 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import { legacy_createStore as createStore, applyMiddleware } from 'redux';
 import rootReducer from './modules';
 import { Provider } from 'react-redux';
-import { devToolsEnhancer } from 'redux-devtools-extension';
+//import { devToolsEnhancer } from 'redux-devtools-extension';
 import { createLogger } from 'redux-logger';
 import { thunk } from 'redux-thunk';
 //import loggerMiddleware from './lib/loggerMiddleware';
