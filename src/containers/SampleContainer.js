@@ -12,20 +12,27 @@ const SampleContainer = ({
   getUsers,
 }) => {
   useEffect(() => {
-    getPost(1);
-    getUsers();
+    const fn = async () => {
+      try {
+        await getPost(1);
+        await getUsers();
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    fn();
   }, [getPost, getUsers]);
 
   return <Sample post={post} users={users} error={error} loading={loading} />;
 };
 
 export default connect(
-  (state) => ({
-    post: state.sample.post,
-    users: state.sample.users,
-    loadingPost: state.sample.loading.GET_POST,
-    loadingUsers: state.sample.loading.GET_USERS,
-    error: state.sample.error,
+  ({ sample, loading }) => ({
+    post: sample.post,
+    users: sample.users,
+    loadingPost: loading['sample/GET_POST'],
+    loadingUsers: loading['sample/GET_USERS'],
+    error: sample.error,
   }),
   {
     getPost,
