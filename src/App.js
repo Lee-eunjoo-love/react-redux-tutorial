@@ -3,7 +3,7 @@ import SampleContainer from './containers/SampleContainer';
 import TodosContainer from './containers/TodosContainer';
 //import notify from './notify';
 import './App.css';
-import React, { Suspense, Component } from 'react';
+import React, { Suspense, Component, useState } from 'react';
 
 /*function App() {
   const onClick = () => {
@@ -43,7 +43,7 @@ import React, { Suspense, Component } from 'react';
 // - React.lazy 와 Suspense 는 함수형 컴포넌트에서만 사용 가능. 클래스형 컴포넌트에서는 사용 불가.
 // - React.lazy 와 Suspense 는 자바스크립트 표준 문법이므로 바벨 등의 별도 설정 없이 사용 가능
 // - 웹팩에서 지원하고 있으므로 별도 설정없이 프로젝트에서 바로 사용 가능.
-class App extends Component {
+/*class App extends Component {
   state = {
     SplitMe: null,
   };
@@ -94,6 +94,41 @@ class App extends Component {
       </div>
     );
   }
+}*/
+
+// #. 함수형 컴포넌트에서 React.lazy 와 Suspense 로 컴포넌트 코드 분리하기 (클래스형 컴포넌트에서 사용 불가하며 SSR 에서도 사용 불가)
+function App() {
+  const [visible, setVisible] = useState(null);
+  const onClick = async () => {
+    setVisible(true);
+  };
+
+  // #. React.lazy : 컴포넌트를 렌더링하는 시점에 비동기 로딩하는 유틸 함수
+  // #. Suspense : 컴포넌트를 감싸서 비동기로 불러오는 동안 보여줄 대체 UI를 지정하는 리액트 내장 컴포넌트.
+  //               코드 스플리팅된 컴포넌트를 로딩을 시작하게 하고 로딩이 끝나지 않았을 때 보여줄 UI를 fallback props로 설정.
+  const SplitMe = React.lazy(() => import('./SplitMe')); // import() 함수는 프로미스를 반환
+  const SampleContainer = React.lazy(() =>
+    import('./containers/SampleContainer'),
+  );
+  return (
+    <div>
+      <header className="App-header">
+        <h1>자바스크립트 함수 비동기 로딩 예제</h1>
+        <button onClick={onClick}>Hello React!</button>
+        <Suspense fallback={<div>로딩중...</div>}>
+          {visible && <SplitMe />}
+        </Suspense>
+      </header>
+      <hr />
+      <CounterContainer />
+      <hr />
+      <TodosContainer />
+      <hr />
+      <Suspense fallback={<div>로딩중...</div>}>
+        <SampleContainer />
+      </Suspense>
+    </div>
+  );
 }
 
 export default App;
