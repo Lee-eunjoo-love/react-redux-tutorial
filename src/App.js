@@ -1,9 +1,10 @@
 import CounterContainer from './containers/CounterContainer';
-import SampleContainer from './containers/SampleContainer';
+//import SampleContainer from './containers/SampleContainer';
 import TodosContainer from './containers/TodosContainer';
 //import notify from './notify';
 import './App.css';
 import React, { Suspense, Component, useState } from 'react';
+import loadable from '@loadable/component';
 
 /*function App() {
   const onClick = () => {
@@ -97,7 +98,7 @@ import React, { Suspense, Component, useState } from 'react';
 }*/
 
 // #. 함수형 컴포넌트에서 React.lazy 와 Suspense 로 컴포넌트 코드 분리하기 (클래스형 컴포넌트에서 사용 불가하며 SSR 에서도 사용 불가)
-function App() {
+/*function App() {
   const [visible, setVisible] = useState(null);
   const onClick = async () => {
     setVisible(true);
@@ -127,6 +128,43 @@ function App() {
       <Suspense fallback={<div>로딩중...</div>}>
         <SampleContainer />
       </Suspense>
+    </div>
+  );
+}*/
+
+// #. @loadable/component 라이브러리 사용 (SSR 에서도 사용 가능)
+// - @loadable/component : React.lazy 와 Suspense 의 단점을 보완한 라이브러리로 SSR 에서도 사용 가능.
+// - yarn add @loadable/component
+const SplitMe = loadable(() => import('./SplitMe'), {
+  fallback: <div>로딩중...</div>,
+});
+const SampleContainer = loadable(() => import('./containers/SampleContainer'), {
+  fallback: <div>로딩중...</div>,
+});
+function App() {
+  const [visible, setVisible] = useState(null);
+  const onClick = async () => {
+    setVisible(true);
+  };
+  const onMouseOver = () => {
+    // 마우스 오버시 미리 로딩
+    SplitMe.preload();
+  };
+  return (
+    <div>
+      <div>
+        <h1>자바스크립트 함수 비동기 로딩 예제</h1>
+        <button onClick={onClick} onMouseOver={onMouseOver}>
+          Hello React!
+        </button>
+        {visible && <SplitMe />}
+      </div>
+      <hr />
+      <CounterContainer />
+      <hr />
+      <TodosContainer />
+      <hr />
+      <SampleContainer />
     </div>
   );
 }
