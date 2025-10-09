@@ -78,5 +78,11 @@ export default sagaCounter;
  *    3. call : 비동기 함수를 호출할 때 사용. 프로미스를 반환하는 함수와 함께 사용.
  *    4. put : 액션을 디스패치할 때 사용.
  *    5. all : 여러 사가를 동시에 실행할 때 사용.
- *
+ *    6. throttle : 특정 시간 간격으로 액션을 처리. 일정 시간 내에 여러 번 디스패치된 액션 중 첫 번째 액션만 처리.
+ *       yield throttle(3000, INCREASE_ASYNC, increaseSaga); // 3초에 한번만 실행
+ *    (유용한 기능)
+ *    1. delay : 일정 시간 지연 후 작업을 수행할 때 사용.
+ *    2. select : 현재 리덕스 상태를 조회할 때 사용.
+ *       yield put(increase()); // 특정 액션 디스패치
+ *       yield select((state) => state.counter.number); // 현재 상태 조회 (state 는 스토어 상태)
  */
